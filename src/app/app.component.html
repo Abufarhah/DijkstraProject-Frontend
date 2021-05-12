@@ -1,22 +1,26 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" style="color:white;">Dijkstra Project</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
+  <span class="navbar-toggler-icon"></span>
   </button>
 </nav>
-<div id="source-destination" style="padding-top: 10px;">
-    <form class="source-destination-form">
-        <span class="left"> <label for="source" class="navbar-brand">Source:</label>
-      <input type="search" ngModel (click)="click('source')" name="source" id="source" class="form-field"
-        placeholder="Starting Point" required></span>
-        <span class="center"><button type="button" class="btn btn-primary tooltips" data-placement="top"
-        data-toggle="tooltip" data-original-title="Edit" (click)="findPath()"><i class="fa fa-location-arrow"> Get
-          Direction</i></button></span>
-        <span class="right"> <label for="destination" class="navbar-brand">Destination:</label>
-      <input type="search" ngModel (click)="click('destination')" name="destination " id="destination"
-        class="form-field" placeholder="Destination" required></span>
-    </form>
-</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <button type="button" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit" (click)="findPath()"><i class="fa fa-location-arrow"> Get
+          Direction</i></button>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input type="search" id="source" (click)="click('source')" class="form-control mr-sm-2" placeholder="Starting point" required>
+        </form>
+
+        <form class="form-inline my-2 my-lg-0">
+            <input type="search" id="destination" (click)="click('destination')" class="form-control mr-sm-2" placeholder="Destinaton" required>
+        </form>
+    </div>
+</nav>
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
 <agm-map [zoom]="3" [latitude]="31.9038" [longitude]="35.2034" ngModel #map>
