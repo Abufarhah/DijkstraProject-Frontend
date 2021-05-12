@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   public countries: Country[];
   public path: Country[];
   public selectedInput: string;
+  public previous: any;
   @ViewChild('map') map: AgmMap;
 
   constructor(private dijkstraService: DijkstraService) { }
@@ -33,10 +34,14 @@ export class AppComponent implements OnInit {
     );
   }
 
-  public markerClicked(country: Country): void {
+  public markerClicked(country: Country, infowindow: any): void {
     if (this.selectedInput != null) {
       (<HTMLInputElement>document.getElementById(this.selectedInput)).value = country.countryName;
     }
+    if (this.previous) {
+      this.previous.close();
+    }
+    this.previous = infowindow;
   }
 
   public click(id: string): void {
@@ -46,13 +51,13 @@ export class AppComponent implements OnInit {
   public findPath(): void {
     var source = (<HTMLInputElement>document.getElementById('source')).value;
     var destination = (<HTMLInputElement>document.getElementById('destination')).value;
-    if(source==""&&destination==""){
+    if (source == "" && destination == "") {
       alert("you should select source and destinaton");
       return;
-    }else if(source==""){
+    } else if (source == "") {
       alert("you should select source");
       return;
-    }else if(destination==""){
+    } else if (destination == "") {
       alert("you should select destinaton");
       return;
     }
@@ -61,9 +66,9 @@ export class AppComponent implements OnInit {
         this.path = response;
         var result = "";
         this.path.forEach(element => {
-            result+=element.countryName;
+          result += element.countryName;
         });
-        alert(result);
+        //alert(result);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
