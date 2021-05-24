@@ -4,6 +4,7 @@ import { ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Country } from './country';
 import { DijkstraService } from './dijkstra.service';
+import { pathDto } from './path';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { DijkstraService } from './dijkstra.service';
 export class AppComponent implements OnInit {
   public countries: Country[];
   public path: Country[];
+  public distance: number;
   public selectedInput: string;
   public previous: any;
   @ViewChild('map') map: AgmMap;
@@ -48,6 +50,10 @@ export class AppComponent implements OnInit {
     this.selectedInput = id;
   }
 
+  public reset(): void {
+    this.path = [];
+  }
+
   public findPath(): void {
     var source = (<HTMLInputElement>document.getElementById('source')).value;
     var destination = (<HTMLInputElement>document.getElementById('destination')).value;
@@ -62,13 +68,19 @@ export class AppComponent implements OnInit {
       return;
     }
     this.dijkstraService.getPath(source, destination).subscribe(
-      (response: Country[]) => {
-        this.path = response;
+      (response: pathDto) => {
+        this.path = response.countries;
+        this.distance=response.distance;
         var result = "";
         this.path.forEach(element => {
-          result += element.countryName;
+          result += element.countryName+" ->";
         });
-        //alert(result);
+        result+="/n "+"Distance: "+this.distance;
+        if (this.path.length == 0) {
+          alert("No Path between " + source + " and " + destination);
+        } else {
+          alert(result);
+        }
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
