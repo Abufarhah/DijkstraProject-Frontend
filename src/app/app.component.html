@@ -19,7 +19,7 @@
             <div class="form-group">
                 <select id="source" class="form-control" (click)="click('source')" #source required>
                     <option value="">Select Starting Point</option>
-                    <option *ngFor="let country of countries" value="{{ country }}">{{country.countryName}}</option>
+                    <option *ngFor="let country of countries" value="{{ country.countryName }}">{{country.countryName}}</option>
                 </select>
             </div>
         </form>
@@ -28,7 +28,7 @@
             <div class="form-group">
                 <select id="destination" class="form-control" (click)="click('destination')" #destination required>
                     <option value="">Select Destination</option>
-                    <option *ngFor="let country of countries" value="{{ country }}">{{country.countryName}}</option>
+                    <option *ngFor="let country of countries" value="{{ country.countryName }}">{{country.countryName}}</option>
                 </select>
             </div>
         </form>
@@ -36,14 +36,42 @@
 </nav>
 <!-- this creates a google map on the page with the given lat/lng from -->
 <!-- the component as the initial center of the map: -->
-<agm-map [zoom]="3" [latitude]="31.9038" [longitude]="35.2034" ngModel #map>
-    <agm-marker *ngFor="let country of countries" [latitude]="country.latitude" [longitude]="country.longitude" [markerClickable]="true" (markerClick)="markerClicked(country,infowindow)">
-        <agm-info-window #infowindow>
-            <h2>{{country.countryName}}</h2>
-        </agm-info-window>
-    </agm-marker>
-    <agm-polyline [editable]="true">
-        <agm-polyline-point *ngFor="let country of path" [latitude]="country.latitude" [longitude]="country.longitude">
-        </agm-polyline-point>
-    </agm-polyline>
-</agm-map>
+<div id="main-container">
+    <agm-map [zoom]="3" [latitude]="31.9038" [longitude]="35.2034" ngModel #map>
+        <agm-marker *ngFor="let country of countries" [latitude]="country.latitude" [longitude]="country.longitude" [markerClickable]="true" (markerClick)="markerClicked(country,infowindow)">
+            <agm-info-window #infowindow>
+                <h2>{{country.countryName}}</h2>
+            </agm-info-window>
+        </agm-marker>
+        <agm-polyline [editable]="true">
+            <agm-polyline-point *ngFor="let country of path" [latitude]="country.latitude" [longitude]="country.longitude">
+            </agm-polyline-point>
+        </agm-polyline>
+    </agm-map>
+</div>
+
+<div class="modal fade" id="showPathModal" tabindex="-1" role="dialog" aria-labelledby="showPathModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showPathModalLabel">Distance: {{distance}} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <pre><label *ngFor="let country of path">{{country.countryName}} </label></pre>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<footer *ngIf="path?.length == 0" class="alert alert-info" role="alert">
+    <h4 class="alert-heading" style="text-align:center;">NO PATH WAS FOUND!</h4>
+</footer>

@@ -39,21 +39,21 @@ export class AppComponent implements OnInit {
 
   public markerClicked(country: Country, infowindow: any): void {
     if (this.selectedInput != null) {
-      var options=(<HTMLSelectElement>document.getElementById(this.selectedInput)).options;
+      var options = (<HTMLSelectElement>document.getElementById(this.selectedInput)).options;
       for (let index = 0; index < options.length; index++) {
         const option = options[index];
-        if(option.text==country.countryName){
-          option.selected=true;
+        if (option.text == country.countryName) {
+          option.selected = true;
           break;
         }
-        
+
       }
-    if (this.previous) {
-      this.previous.close();
+      if (this.previous) {
+        this.previous.close();
+      }
+      this.previous = infowindow;
     }
-    this.previous = infowindow;
   }
-}
 
   public click(id: string): void {
     this.selectedInput = id;
@@ -64,8 +64,12 @@ export class AppComponent implements OnInit {
   }
 
   public findPath(): void {
-    var source = (<HTMLInputElement>document.getElementById('source')).value;
-    var destination = (<HTMLInputElement>document.getElementById('destination')).value;
+    var options = (<HTMLSelectElement>document.getElementById("source")).options;
+    var sourceIndex = options.selectedIndex;
+    var source = (<HTMLSelectElement><unknown>options[sourceIndex]).value;
+    var options = (<HTMLSelectElement>document.getElementById("destination")).options;
+    var destinationIndex = options.selectedIndex;
+    var destination = (<HTMLSelectElement><unknown>options[destinationIndex]).value;
     if (source == "" && destination == "") {
       alert("you should select source and destinaton");
       return;
@@ -79,22 +83,29 @@ export class AppComponent implements OnInit {
     this.dijkstraService.getPath(source, destination).subscribe(
       (response: pathDto) => {
         this.path = response.countries;
-        this.distance=response.distance;
-        var result = "";
-        this.path.forEach(element => {
-          result += element.countryName+" ->";
-        });
-        result+="/n "+"Distance: "+this.distance;
-        if (this.path.length == 0) {
-          alert("No Path between " + source + " and " + destination);
-        } else {
-          alert(result);
+        this.distance = Math.round(response.distance);
+        if (this.path.length != 0) {
+          this.showPath();
         }
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
       }
     );
+  }
+
+  public showPath(): void {
+    const container = document.getElementById('main-container');
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.style.display = 'none';
+    button.setAttribute('data-toggle', 'modal');
+    button.setAttribute('data-target', '#showPathModal');
+    if (container != null) {
+      container.appendChild(button);
+      button.click();
+    }
+
   }
 
 }
