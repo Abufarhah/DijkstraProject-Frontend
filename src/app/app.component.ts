@@ -2,6 +2,7 @@ import { AgmMap, AgmMarker } from '@agm/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Country } from './country';
 import { DijkstraService } from './dijkstra.service';
 import { pathDto } from './path';
@@ -38,13 +39,21 @@ export class AppComponent implements OnInit {
 
   public markerClicked(country: Country, infowindow: any): void {
     if (this.selectedInput != null) {
-      (<HTMLInputElement>document.getElementById(this.selectedInput)).value = country.countryName;
-    }
+      var options=(<HTMLSelectElement>document.getElementById(this.selectedInput)).options;
+      for (let index = 0; index < options.length; index++) {
+        const option = options[index];
+        if(option.text==country.countryName){
+          option.selected=true;
+          break;
+        }
+        
+      }
     if (this.previous) {
       this.previous.close();
     }
     this.previous = infowindow;
   }
+}
 
   public click(id: string): void {
     this.selectedInput = id;
