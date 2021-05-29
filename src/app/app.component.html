@@ -10,10 +10,7 @@
             <li class="nav-item active">
                 <button type="button" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit" (click)="findPath()"><i class="fa fa-location-arrow"> Get
                         Direction</i></button>
-            </li>
-            <li class="nav-item active">
                 <button type="button" class="btn btn-primary tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit" (click)="reset()"><i class="fa fa-repeat"> Reset</i></button>
-            </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <div class="form-group">
@@ -22,15 +19,16 @@
                     <option *ngFor="let country of countries" value="{{ country.countryName }}">{{country.countryName}}</option>
                 </select>
             </div>
-        </form>
-
-        <form class="form-inline my-2 my-lg-0">
             <div class="form-group">
                 <select id="destination" class="form-control" (click)="click('destination')" #destination required>
                     <option value="">Select Destination</option>
                     <option *ngFor="let country of countries" value="{{ country.countryName }}">{{country.countryName}}</option>
                 </select>
             </div>
+        </form>
+
+        <form class="form-inline my-2 my-lg-0">
+
         </form>
     </div>
 </nav>
